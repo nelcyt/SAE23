@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instant Weather - Prévisions Instantanées</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header class="app-header">
+            <h1><i class="fas fa-cloud-sun"></i> Instant Weather</h1>
+            <p class="subtitle">Consultez les prévisions météo de votre commune</p>
+        </header>
+
+        <main>
+            <section class="search-section">
+                <div class="search-card">
+                    <h2>Trouver votre commune</h2>
+                    <div class="form-group">
+                        <label for="postalCodeInput">Code Postal</label>
+                        <input type="text" id="postalCodeInput" placeholder="Ex: 75000" maxlength="5">
+                        <small class="hint">Saisissez les 5 chiffres du code postal</small>
+                    </div>
+
+                    <div class="form-group" id="townSelection" style="display: none;">
+                        <label for="townSelect">Commune</label>
+                        <select id="townSelect"></select>
+                        <button id="validateBtn" class="btn-primary">Voir la météo</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="weather-section" id="weatherResults">
+                <!-- Les cartes météo seront ajoutées ici dynamiquement -->
+            </section>
+        </main>
+
+        <footer class="app-footer">
+            <p>Données météo fournies par <a href="https://api.meteo-concept.com/" target="_blank">Meteo Concept</a></p>
+            <p>Liste des communes via <a href="https://geo.api.gouv.fr/" target="_blank">API Géo</a></p>
+        </footer>
+    </div>
+
+    <script src="js/app.js"></script>
+</body>
+</html>
