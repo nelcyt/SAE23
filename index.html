@@ -10,8 +10,14 @@
 <body>
     <div class="container">
         <header class="app-header">
-            <h1><i class="fas fa-cloud-sun"></i> Instant Weather</h1>
-            <p class="subtitle">Consultez les prévisions météo de votre commune</p>
+            <div class="header-top">
+                <h1><i class="fas fa-cloud-sun"></i> Instant Weather</h1>
+                <button id="themeToggle" class="theme-toggle" aria-label="Changer de thème">
+                    <i class="fas fa-moon"></i>
+                </button>
+            </div>
+            <p class="subtitle">Votre météo en un clic</p>
+            <p>Choisissez votre commune et consultez les prévisions</p>
         </header>
 
         <main>
@@ -27,8 +33,22 @@
                     <div class="form-group" id="townSelection" style="display: none;">
                         <label for="townSelect">Commune</label>
                         <select id="townSelect"></select>
-                        <button id="validateBtn" class="btn-primary">Voir la météo</button>
                     </div>
+
+                    <div class="form-group" id="forecastSelection" style="display: none;">
+                      <label for="daysRange">Nombre de jours de prévision: <span id="daysValue">3</span> jours</label>
+                        <input type="range" id="daysRange" min="1" max="7" value="3" step="1">
+                          <div class="range-labels">
+                            <span>1</span>
+                            <span>2</span>
+                            <span>3</span>
+                           <span>4</span>
+                           <span>5</span>
+                           <span>6</span>
+                           <span>7</span>
+                          </div>
+    <button id="validateBtn" class="btn-primary">Voir la météo</button>
+</div>
                 </div>
             </section>
 

@@ -4,34 +4,44 @@ const townSelect = document.getElementById('townSelect');
 const validateBtn = document.getElementById('validateBtn');
 const townSelection = document.getElementById('townSelection');
 const weatherResults = document.getElementById('weatherResults');
+const themeToggle = document.getElementById('themeToggle');
+const daysRange = document.getElementById('daysRange');
+const daysValue = document.getElementById('daysValue');
+const forecastSelection = document.getElementById('forecastSelection');
+
+// Gestion du thème
+themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    const icon = themeToggle.querySelector('i');
+    if (document.body.classList.contains('dark-mode')) {
+        icon.classList.replace('fa-moon', 'fa-sun');
+        localStorage.setItem('theme', 'dark');
+    } else {
+        icon.classList.replace('fa-sun', 'fa-moon');
+        localStorage.setItem('theme', 'light');
+    }
+});
+
+// Charger le thème sauvegardé
+if (localStorage.getItem('theme') === 'dark') {
+    document.body.classList.add('dark-mode');
+    themeToggle.querySelector('i').classList.replace('fa-moon', 'fa-sun');
+}
 
 // Écouteur d'événement pour la saisie du code postal
 postalCodeInput.addEventListener('input', async () => {
     const postalCode = postalCodeInput.value.trim();
     
-    // Masquer la sélection de commune tant qu'on n'a pas un code postal valide
     townSelection.style.display = 'none';
-    
-    if (postalCode.length === 5 && /^\d+$/.test(postalCode)) {
+    forecastSelection.style.display = 'none';
+    weatherResults.innerHTML = '';
+
+    if (/^\d{5}$/.test(postalCode)) {
         try {
             const towns = await fetchTownsByPostalCode(postalCode);
             displayTownOptions(towns);
         } catch (error) {
             showError("Impossible de récupérer les communes. Veuillez réessayer.");
-        }
-    }
-});
-
-// Écouteur pour le bouton de validation
-validateBtn.addEventListener('click', async () => {
-    const selectedTownCode = townSelect.value;
-    
-    if (selectedTownCode) {
-        try {
-            const weatherData = await fetchWeatherData(selectedTownCode);
-            displayWeatherCard(weatherData);
-        } catch (error) {
-            showError("Impossible d'obtenir les données météo pour cette commune.");
         }
     }
 });
@@ -42,6 +52,10 @@ async function fetchTownsByPostalCode(postalCode) {
     if (!response.ok) throw new Error('Erreur API');
     return await response.json();
 }
+
+daysRange.addEventListener('input', () => {
+    daysValue.textContent = daysRange.value;
+});
 
 // Fonction pour afficher les options de communes
 function displayTownOptions(towns) {
@@ -60,28 +74,82 @@ function displayTownOptions(towns) {
     });
     
     townSelection.style.display = 'block';
+    forecastSelection.style.display = 'block';
 }
 
-// Fonction pour récupérer les données météo
-async function fetchWeatherData(townCode) {
+// Écouteur pour le bouton de validation
+validateBtn.addEventListener('click', async () => {
+    const selectedTownCode = townSelect.value;
+    const days = parseInt(daysRange.value); 
+    
+    if (selectedTownCode) {
+        try {
+            const weatherData = await fetchWeatherForecast(selectedTownCode, days);
+            displayWeatherForecast(weatherData);
+        } catch (error) {
+            showError("Impossible d'obtenir les données météo pour cette commune.");
+        }
+    }
+});
+
+// Fonction pour récupérer les prévisions météo
+async function fetchWeatherForecast(townCode, days) {
     const response = await fetch(
-        `https://api.meteo-concept.com/api/forecast/daily/0?token=4bba169b3e3365061d39563419ab23e5016c0f838ba282498439c41a00ef1091&insee=${townCode}`
+        `https://api.meteo-concept.com/api/forecast/daily?token=56b70f8ed4159987116c4b8f089f54681cbc39bedcb068b47f2f6345b62d86b3&insee=${townCode}&start=0&end=${days-1}`
     );
     if (!response.ok) throw new Error('Erreur API Météo');
     return await response.json();
 }
 
-// Fonction pour afficher la carte météo
-function displayWeatherCard(weatherData) {
-    weatherResults.innerHTML = `
-        <div class="weather-card">
-            <h3>${weatherData.city.name}</h3>
-            <p>Température: ${weatherData.forecast.temp2m}°C</p>
-            <p>Conditions: ${weatherData.forecast.weather}</p>
-            <p>Humidité: ${weatherData.forecast.rh2m}%</p>
-            <p>Vent: ${weatherData.forecast.wind10m} km/h</p>
-        </div>
-    `;
+// Fonction pour afficher les prévisions météo
+function displayWeatherForecast(weatherData) {
+    weatherResults.innerHTML = '';
+    
+    if (!weatherData || !weatherData.forecast || !Array.isArray(weatherData.forecast)) {
+        showError("Données météo invalides");
+        return;
+    }
+
+    weatherData.forecast.forEach(day => {
+        // Vérification des données
+        const date = day.datetime ? new Date(day.datetime) : new Date();
+        const options = { weekday: 'long', day: 'numeric', month: 'long' };
+        const formattedDate = date.toLocaleDateString('fr-FR', options);
+        
+        // Valeurs par défaut pour éviter undefined
+        const temp = day.temp2m !== undefined ? Math.round(day.temp2m) : 'N/A';
+        const humidity = day.rh2m !== undefined ? `${Math.round(day.rh2m)}%` : 'N/A';
+        const wind = day.wind10m !== undefined ? `${Math.round(day.wind10m)} km/h` : 'N/A';
+        const rain = day.probarain !== undefined ? `${Math.round(day.probarain)}%` : '0%';
+        const sun = day.sun_hours !== undefined ? `${day.sun_hours}h` : 'N/A';
+
+        // Sélection de l'icône
+        let weatherIcon = 'fa-cloud-sun'; // Valeur par défaut
+        if (day.weather) {
+            const weatherCode = day.weather;
+            if (weatherCode >= 4 && weatherCode <= 7) weatherIcon = 'fa-cloud';
+            else if (weatherCode >= 10 && weatherCode <= 16) weatherIcon = 'fa-cloud-rain';
+            else if (weatherCode >= 20 && weatherCode <= 22) weatherIcon = 'fa-snowflake';
+            else if (weatherCode >= 30 && weatherCode <= 32) weatherIcon = 'fa-wind';
+            else if (weatherCode === 0 || weatherCode === 1) weatherIcon = 'fa-sun';
+        }
+
+        // Création de la carte
+        const dayElement = document.createElement('div');
+        dayElement.className = 'weather-card';
+        dayElement.innerHTML = `
+            <div class="weather-date">${formattedDate}</div>
+            <div class="weather-icon"><i class="fas ${weatherIcon}"></i></div>
+            <div class="weather-temp">${temp}°C</div>
+            <div class="weather-details">
+                <div class="weather-detail"><i class="fas fa-tint"></i> ${humidity} humidité</div>
+                <div class="weather-detail"><i class="fas fa-wind"></i> ${wind} vent</div>
+                <div class="weather-detail"><i class="fas fa-umbrella"></i> ${rain} pluie</div>
+                <div class="weather-detail"><i class="fas fa-sun"></i> ${sun} soleil</div>
+            </div>
+        `;
+        weatherResults.appendChild(dayElement);
+    });
 }
 
 // Fonction pour afficher les erreurs
