@@ -111,58 +111,47 @@ function displayWeatherForecast(weatherData) {
     }
 
     weatherData.forecast.forEach(day => {
-        // Vérification des données
         const date = day.datetime ? new Date(day.datetime) : new Date();
         const options = { weekday: 'long', day: 'numeric', month: 'long' };
         const formattedDate = date.toLocaleDateString('fr-FR', options);
         
-        // Valeurs par défaut pour éviter undefined
-        const temp = day.temp2m !== undefined ? Math.round(day.temp2m) : 'N/A';
-        const humidity = day.rh2m !== undefined ? `${Math.round(day.rh2m)}%` : 'N/A';
-        const wind = day.wind10m !== undefined ? `${Math.round(day.wind10m)} km/h` : 'N/A';
-        const rain = day.probarain !== undefined ? `${Math.round(day.probarain)}%` : '0%';
-        const sun = day.sun_hours !== undefined ? `${day.sun_hours}h` : 'N/A';
+        // Extraction des données spécifiques
+        const tempMin = day.tmin !== undefined ? Math.round(day.tmin) : 'N/A';
+        const tempMax = day.tmax !== undefined ? Math.round(day.tmax) : 'N/A';
+        const rainProb = day.probarain !== undefined ? Math.round(day.probarain) : 'N/A';
+        const sunshine = day.sun_hours !== undefined ? day.sun_hours : 'N/A';
 
-        // Sélection de l'icône
-        let weatherIcon = 'fa-cloud-sun'; // Valeur par défaut
-        if (day.weather) {
-            const weatherCode = day.weather;
-            if (weatherCode >= 4 && weatherCode <= 7) weatherIcon = 'fa-cloud';
-            else if (weatherCode >= 10 && weatherCode <= 16) weatherIcon = 'fa-cloud-rain';
-            else if (weatherCode >= 20 && weatherCode <= 22) weatherIcon = 'fa-snowflake';
-            else if (weatherCode >= 30 && weatherCode <= 32) weatherIcon = 'fa-wind';
-            else if (weatherCode === 0 || weatherCode === 1) weatherIcon = 'fa-sun';
-        }
+        // Sélection de l'icône météo
+        let weatherIcon = getWeatherIcon(day.weather);
 
-        // Création de la carte
+        // Création de la carte météo
         const dayElement = document.createElement('div');
         dayElement.className = 'weather-card';
         dayElement.innerHTML = `
             <div class="weather-date">${formattedDate}</div>
             <div class="weather-icon"><i class="fas ${weatherIcon}"></i></div>
-            <div class="weather-temp">${temp}°C</div>
+            <div class="weather-temps">
+                <span class="temp-max">${tempMax}°C</span>
+                <span class="temp-min">${tempMin}°C</span>
+            </div>
             <div class="weather-details">
-                <div class="weather-detail"><i class="fas fa-tint"></i> ${humidity} humidité</div>
-                <div class="weather-detail"><i class="fas fa-wind"></i> ${wind} vent</div>
-                <div class="weather-detail"><i class="fas fa-umbrella"></i> ${rain} pluie</div>
-                <div class="weather-detail"><i class="fas fa-sun"></i> ${sun} soleil</div>
+                <div class="weather-detail"><i class="fas fa-umbrella"></i> ${rainProb}% pluie</div>
+                <div class="weather-detail"><i class="fas fa-sun"></i> ${sunshine}h soleil</div>
             </div>
         `;
         weatherResults.appendChild(dayElement);
     });
 }
 
-// Fonction pour afficher les erreurs
-function showError(message) {
-    const existingError = document.querySelector('.error-message');
-    if (existingError) existingError.remove();
+// Fonction helper pour les icônes météo
+function getWeatherIcon(weatherCode) {
+    if (!weatherCode) return 'fa-cloud-sun';
     
-    const errorElement = document.createElement('div');
-    errorElement.className = 'error-message';
-    errorElement.textContent = message;
-    weatherResults.insertAdjacentElement('beforebegin', errorElement);
+    if (weatherCode >= 4 && weatherCode <= 7) return 'fa-cloud';
+    if (weatherCode >= 10 && weatherCode <= 16) return 'fa-cloud-rain';
+    if (weatherCode >= 20 && weatherCode <= 22) return 'fa-snowflake';
+    if (weatherCode >= 30 && weatherCode <= 32) return 'fa-wind';
+    if (weatherCode === 0 || weatherCode === 1) return 'fa-sun';
     
-    setTimeout(() => {
-        errorElement.remove();
-    }, 5000);
+    return 'fa-cloud-sun';
 }

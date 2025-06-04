@@ -204,10 +204,22 @@ body.dark-mode .weather-card {
     color: var(--secondary);
 }
 
-.weather-temp {
-    font-size: 1.5rem;
-    font-weight: bold;
+.weather-temps {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
     margin: 0.5rem 0;
+    font-size: 1.2rem;
+}
+
+.temp-max {
+    color: var(--primary);
+    font-weight: bold;
+}
+
+.temp-min {
+    color: var(--secondary);
+    opacity: 0.8;
 }
 
 .weather-details {
@@ -221,12 +233,22 @@ body.dark-mode .weather-card {
     display: flex;
     align-items: center;
     font-size: 0.9rem;
+    padding: 0.3rem 0;
 }
 
 .weather-detail i {
-    margin-right: 0.5rem;
-    width: 1.2rem;
+    width: 1.5rem;
+    text-align: center;
+    margin-right: 0.3rem;
     color: var(--secondary);
+}
+
+.fa-sun {
+    color: #f39c12;
+}
+
+.fa-umbrella {
+    color: #3498db;
 }
 
 .app-footer {
