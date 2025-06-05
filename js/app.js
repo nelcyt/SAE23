@@ -109,26 +109,49 @@ validateBtn.addEventListener('click', async () => {
     }
 });
 
+
+
+
 // Récupérer les prévisions météo
 async function fetchWeatherForecast(townCode, days) {
     const url = `https://api.meteo-concept.com/api/forecast/daily?token=${METEO_API_TOKEN}&insee=${townCode}&start=0&end=${days-1}`;
     
-    const response = await fetch(url);
-    if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
-    
-    const data = await response.json();
-    console.log("Réponse API Météo:", data); // Pour débogage
-    
-    if (!data || !data.forecast) {
-        throw new Error("Données météo invalides dans la réponse");
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+        
+        const data = await response.json();
+        
+        // Debug: affichez la structure complète reçue
+        console.log("Données API complètes:", JSON.parse(JSON.stringify(data)));
+        
+        // Transformation des données pour uniformiser l'accès
+        console.log("Latitude:", data.city.latitude);
+        console.log("Longitude:", data.city.longitude);
+        return {
+            city: {
+                name: data.city?.name || "Nom inconnu",
+                lat: data.city?.latitude,
+                lon: data.city?.longitude
+            },
+            forecast: data.forecast.map(day => ({
+                ...day,
+                windDirection: day.wind10m?.direction || day.direction,
+                windSpeed: day.wind10m?.speed || day.wind10m
+            }))
+        };
+    } catch (error) {
+        console.error("Erreur fetchWeatherForecast:", error);
+        throw error;
     }
+
     
-    return data;
 }
 
 // Afficher les prévisions météo
 function displayWeatherForecast(weatherData) {
     weatherResults.innerHTML = '';
+    console.log(weatherData)
     
     weatherData.forecast.forEach(day => {
         const date = day.datetime ? new Date(day.datetime) : new Date();
@@ -164,18 +187,18 @@ function displayWeatherForecast(weatherData) {
         let additionalHtml = '';
         
         // Coordonnées
-        if (showCoordinates.checked && weatherData.city) {
-            additionalHtml += `
-                <div class="additional-detail">
-                    <span>Latitude:</span>
-                    <span>${weatherData.city.lat?.toFixed(4) || 'N/A'}</span>
-                </div>
-                <div class="additional-detail">
-                    <span>Longitude:</span>
-                    <span>${weatherData.city.lon?.toFixed(4) || 'N/A'}</span>
-                </div>
-            `;
-        }
+        if (showCoordinates.checked) {
+    additionalHtml += `
+        <div class="additional-detail">
+            <span>Latitude:</span>
+            <span>${weatherData.city.lat.toFixed(3) ?? 'N/A'}</span>
+        </div>
+        <div class="additional-detail">
+            <span>Longitude:</span>
+            <span>${weatherData.city.lon.toFixed(3) ?? 'N/A'}</span>
+        </div>
+    `;
+}
 
         // Cumul de pluie
         if (showRainfall.checked && day.rr10 !== undefined) {
@@ -189,20 +212,21 @@ function displayWeatherForecast(weatherData) {
 
         // Détails vent
         if (showWind.checked) {
-            const windDir = day.direction || 0;
-            const windIcon = getWindDirectionIcon(windDir);
-            
-            additionalHtml += `
-                <div class="additional-detail">
-                    <span>Vent moyen:</span>
-                    <span>${day.wind10m || 'N/A'} km/h</span>
-                </div>
-                <div class="additional-detail">
-                    <span>Direction:</span>
-                    <span>${windIcon} ${windDir}°</span>
-                </div>
-            `;
-        }
+    const windDir = day.dirwind10m || 'N/A';
+    const windSpeed = day.wind10m || 'N/A';
+    const windIcon = windDir !== 'N/A' ? getWindDirectionIcon(windDir) : '';
+    
+    additionalHtml += `
+        <div class="additional-detail">
+            <span>Vent moyen:</span>
+            <span>${windSpeed} km/h</span>
+        </div>
+        <div class="additional-detail">
+            <span>Direction:</span>
+            <span>${windIcon} ${windDir !== 'N/A' ? windDir + '°' : 'N/A'}</span>
+        </div>
+    `;
+}
 
         // Ajouter les données supplémentaires si nécessaire
         if (additionalHtml) {
@@ -256,3 +280,4 @@ function showError(message, duration = 5000) {
         }, duration);
     }
 }
+
