@@ -31,9 +31,31 @@ if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark-mode');
     themeToggle.checked = true;
 }
-// Mettre à jour l'affichage du nombre de jours
-daysRange.addEventListener('input', () => {
-    daysValue.textContent = daysRange.value;
+function updateSleekRange(value) {
+    const percent = ((value - 1) / 6) * 100;
+    const fill = document.querySelector('.fill');
+    const bubble = document.querySelector('.bubble');
+    const tooltip = document.querySelector('.tooltip');
+    
+    daysValue.textContent = value;
+    fill.style.width = `${percent}%`;
+    bubble.style.left = `${percent}%`;
+    tooltip.textContent = `${value} jour${value > 1 ? 's' : ''}`;
+}
+
+daysRange.addEventListener('input', () => updateSleekRange(daysRange.value));
+
+// Initialisation
+document.addEventListener('DOMContentLoaded', () => {
+    updateSleekRange(daysRange.value);
+    
+    // Animation au chargement
+    document.querySelector('.fill').style.transition = 'none';
+    document.querySelector('.bubble').style.transition = 'none';
+    setTimeout(() => {
+        document.querySelector('.fill').style.transition = '';
+        document.querySelector('.bubble').style.transition = '';
+    }, 10);
 });
 
 // Écouteur pour la saisie du code postal
