@@ -29,7 +29,11 @@ const translations = {
         "wind-speed": "Vent moyen:",
         "wind-direction": "Direction:",
         "rain-probability": "probabilité de pluie",
-        'sunshine':'ensoleillement'
+        'sunshine':'ensoleillement',
+        "aria-coordinates": "Afficher les coordonnées GPS",
+        "aria-rainfall": "Afficher le cumul de pluie",
+        "aria-wind": "Afficher les détails du vent",
+        "aria-theme": "Basculer en mode nuit"
     },
     en: {
         "app-title": "Instant Weather",
@@ -60,6 +64,10 @@ const translations = {
         "wind-speed": "Wind speed:",
         "wind-direction": "Direction:",
         "rain-probability": "rain probability", 
-        'sunshine':'sunshine time'
+        'sunshine':'sunshine time',
+        "aria-coordinates": "Show GPS coordinates",
+        "aria-rainfall": "Show rainfall amount", 
+        "aria-wind": "Show wind details",
+        "aria-theme": "Switch to dark mode"
     }
 };

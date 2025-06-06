@@ -47,36 +47,37 @@
                              </div>
                     </div>
 
-                    <div class="form-group" id="additionalOptions" style="display: none;">
-                        <label class="translatable" data-key="options-label">Options d'affichage :</label>
-                        <div class="toggle-group">
-                            <div class="toggle-option">
-                                <span class="translatable" data-key="coordinates-label">Coordonnées</span>
-                        <label class="switch">
-                            <input type="checkbox" id="showCoordinates">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="toggle-option">
-                        <span class="translatable" data-key="rainfall-label">Cumul pluie</span>
-                        <label class="switch">
-                            <input type="checkbox" id="showRainfall">
-                            <span class="slider"></span>
-                        </label>
-                    </div>
-                    <div class="toggle-option">
-                        <span class="translatable" data-key="wind-label">Détails vent</span>
-                        <label class="switch">
-                            <input type="checkbox" id="showWind">
-                            <span class="slider"></span>
-                        </label>
+                        <div class="form-group" id="additionalOptions" style="display: none;">
+                            <label class="translatable" data-key="options-label">Options d'affichage :</label>
+                            <div class="toggle-group">
+                                <div class="toggle-option">
+                                    <span class="translatable" data-key="coordinates-label">Coordonnées</span>
+                                    <label class="switch" aria-label="Afficher les coordonnées GPS">
+                                        <input type="checkbox" id="showCoordinates">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="toggle-option">
+                                    <span class="translatable" data-key="rainfall-label">Cumul pluie</span>
+                                    <label class="switch" aria-label="Afficher le cumul de pluie">
+                                        <input type="checkbox" id="showRainfall">
+                                        <span class="slider"></span>
+                                    </label>
+                                </div>
+
+                                <div class="toggle-option">
+                                    <span class="translatable" data-key="wind-label">Détails vent</span>
+                                    <label class="switch" aria-label="Afficher les détails du vent">
+                                        <input type="checkbox" id="showWind">
+                                        <span class="slider"></span>
+                                 </label>
+                                </div>
+                    <button id="validateBtn" class="btn-primary translatable" data-key="validate-btn">Actualiser les prévisions</button>
                     </div>
                 </div>
-                <button id="validateBtn" class="btn-primary translatable" data-key="validate-btn">Actualiser les prévisions</button>
             </div>
-        </div>
-
-            </section>
+        </section>
 
             <section class="weather-section" id="weatherResults">
                 <!-- Les cartes météo seront ajoutées ici dynamiquement -->
@@ -89,13 +90,14 @@
         </footer>
     </div>
     <div class="dark-mode-toggle">
-    <i class="fas fa-sun theme-icon sun-icon"></i>
-    <label class="switch">
+    <em class="fas fa-sun theme-icon sun-icon"></em>
+    <label class="switch" aria-label="Basculer en mode nuit">
         <input type="checkbox" id="themeToggle">
         <span class="slider round"></span>
     </label>
-    <i class="fas fa-moon theme-icon moon-icon"></i>
+    <em class="fas fa-moon theme-icon moon-icon"></em>
 </div>
+
 
 
 </body>

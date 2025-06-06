@@ -13,7 +13,7 @@ const showCoordinates = document.getElementById('showCoordinates');
 const showRainfall = document.getElementById('showRainfall');
 const showWind = document.getElementById('showWind');
 
-// Votre token API
+// token API
 const METEO_API_TOKEN = "56b70f8ed4159987116c4b8f089f54681cbc39bedcb068b47f2f6345b62d86b3";
 
 // Gestion du thème
@@ -351,7 +351,15 @@ function translatePage(lang) {
     // Mettre à jour le titre de la page
     document.title = `Instant Weather - ${translations[lang]['app-title']}`;
     updateDaysDisplay();
+
+    document.querySelectorAll('.switch').forEach((el, index) => {
+        const keys = ["aria-coordinates", "aria-rainfall", "aria-wind", "aria-theme"];
+        if (translations[lang][keys[index]]) {
+            el.setAttribute('aria-label', translations[lang][keys[index]]);
+        }
+    });
 }
+
 
 // Initialisation de la traduction
 document.addEventListener('DOMContentLoaded', () => {
