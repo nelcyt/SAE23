@@ -149,7 +149,7 @@ validateBtn.addEventListener('click', async () => {
     }
 
     try {
-        weatherResults.innerHTML = '<div class="loading">Chargement en cours...</div>';
+        weatherResults.innerHTML = `<div class="loading">${translations[currentLang]['loading']}</div>`;
         const weatherData = await fetchWeatherForecast(selectedTownCode, days);
         
         if (weatherData.forecast.length === 0) {
