@@ -7,46 +7,51 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="images/logo_onglet.png" type="image/png">
+    <script src="js/translations.js" defer></script>
     <script src="js/app.js" defer></script>
 </head>
 <body>
     <div class="container">
         <header class="app-header">
+            <div class="language-switcher">
+                <button class="lang-btn active" data-lang="fr">FR</button>
+                <button class="lang-btn" data-lang="en">EN</button>
+            </div>
             <div class="header-top">
                 <img src="images/logo_instant_weather.png" alt="Instant Weather" class="app-logo">
             </div>
-            <p class="subtitle">Votre météo en un clic</p>
-            <p>Choisissez votre commune et consultez les prévisions</p>
+            <p class="subtitle translatable" data-key="app-subtitle">Votre météo en un clic</p>
+            <p class="translatable" data-key="app-description">Choisissez votre commune et consultez les prévisions</p>
         </header>
 
         <main>
             <section class="search-section">
                 <div class="search-card">
-                    <h2>Trouver votre commune</h2>
+                    <h2 class="translatable" data-key="search-title">Trouver votre commune</h2>
                     <div class="form-group">
-                        <label for="postalCodeInput">Code Postal</label>
-                        <input type="text" id="postalCodeInput" placeholder="Ex: 75000" maxlength="5">
-                        <small class="hint">Saisissez les 5 chiffres du code postal</small>
+                        <label for="postalCodeInput" class="translatable" data-key="postal-label">Code Postal</label>
+                        <input type="text" id="postalCodeInput" placeholder="Ex: 75000" maxlength="5" data-placeholder-key="postal-placeholder">
+                        <small class="hint translatable" data-key="postal-hint">Saisissez les 5 chiffres du code postal</small>
                     </div>
 
                     <div class="form-group" id="townSelection" style="display: none;">
-                        <label for="townSelect">Commune</label>
+                        <label for="townSelect" class="translatable" data-key="town-label">Commune</label>
                         <select id="townSelect"></select>
                     </div>
 
                     <div class="form-group" id="forecastSelection" style="display: none;">
-    <label for="daysRange">Prévisions sur <span id="daysValue">3</span> jours</label>
-    <div class="clean-range">
-        <input type="range" id="daysRange" min="1" max="7" value="3" step="1">
-        <div class="progress-line"></div>
-    </div>
-</div>
+                        <label for="daysRange" class="translatable" data-key="days-label">Prévisions sur <span id="daysValue">3</span> jours</label>
+                            <div class="clean-range">
+                                <input type="range" id="daysRange" min="1" max="7" value="3" step="1">
+                                    <div class="progress-line"></div>
+                             </div>
+                    </div>
 
                     <div class="form-group" id="additionalOptions" style="display: none;">
-                <label>Options d'affichage :</label>
-                <div class="toggle-group">
-                    <div class="toggle-option">
-                        <span>Coordonnées</span>
+                        <label class="translatable" data-key="options-label">Options d'affichage :</label>
+                        <div class="toggle-group">
+                            <div class="toggle-option">
+                                <span class="translatable" data-key="coordinates-label">Coordonnées</span>
                         <label class="switch">
                             <input type="checkbox" id="showCoordinates">
                             <span class="slider"></span>
@@ -67,7 +72,7 @@
                         </label>
                     </div>
                 </div>
-                <button id="validateBtn" class="btn-primary">Actualiser les prévisions</button>
+                <button id="validateBtn" class="btn-primary translatable" data-key="validate-btn">Actualiser les prévisions</button>
             </div>
             </section>
 
@@ -77,8 +82,8 @@
         </main>
 
         <footer class="app-footer">
-            <p>Données météo fournies par <a href="https://api.meteo-concept.com/" target="_blank">Meteo Concept</a></p>
-            <p>Liste des communes via <a href="https://geo.api.gouv.fr/" target="_blank">API Géo</a></p>
+            <p><span class="translatable" data-key="footer-meteo">Données météo fournies par</span> <a href="https://api.meteo-concept.com/" target="_blank">Meteo Concept</a></p>
+            <p><span class="translatable" data-key="footer-geo">Liste des communes via</span> <a href="https://geo.api.gouv.fr/" target="_blank">API Géo</a></p>
         </footer>
     </div>
     <div class="dark-mode-toggle">
@@ -86,7 +91,7 @@
                 <input type="checkbox" id="themeToggle">
                 <span class="slider round"></span>
             </label>
-            <span>Mode nuit</span>
+            <span class="translatable" data-key="dark-mode">Mode nuit</span>
         </div>
     </div>
 

@@ -530,6 +530,40 @@ body.dark-mode .dark-mode-toggle {
     transform: scale(1.05);
 }
 
+.language-switcher {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 5px;
+}
+
+.lang-btn {
+    background: rgba(255, 255, 255, 0.2);
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: all 0.3s;
+}
+
+.lang-btn.active {
+    background: white;
+    color: var(--primary);
+    font-weight: bold;
+}
+
+body.dark-mode .lang-btn {
+    background: rgba(0, 0, 0, 0.2);
+    color: var(--text-dark);
+}
+
+body.dark-mode .lang-btn.active {
+    background: var(--card-dark);
+    color: var(--secondary);
+}
 
 @media (max-width: 768px) {
     .container {

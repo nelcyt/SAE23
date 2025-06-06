@@ -191,12 +191,12 @@ async function fetchWeatherForecast(townCode, days) {
 // Afficher les prévisions météo
 function displayWeatherForecast(weatherData) {
     weatherResults.innerHTML = '';
-    console.log(weatherData)
+    console.log(weatherData);
     
     weatherData.forecast.forEach(day => {
         const date = day.datetime ? new Date(day.datetime) : new Date();
         const options = { weekday: 'long', day: 'numeric', month: 'long' };
-        const formattedDate = date.toLocaleDateString('fr-FR', options);
+        const formattedDate = date.toLocaleDateString(currentLang === 'fr' ? 'fr-FR' : 'en-US', options);
         
         // Données principales
         const tempMin = day.tmin !== undefined ? Math.round(day.tmin) : 'N/A';
@@ -218,8 +218,8 @@ function displayWeatherForecast(weatherData) {
                 <span class="temp-min">${tempMin}°C</span>
             </div>
             <div class="weather-details">
-                <div class="weather-detail"><i class="fas fa-umbrella"></i> ${rainProb}% pluie</div>
-                <div class="weather-detail"><i class="fas fa-sun"></i> ${sunshine}h soleil</div>
+                <div class="weather-detail"><i class="fas fa-umbrella"></i> ${rainProb}% ${translations[currentLang]['rain-probability'] || 'pluie'}</div>
+                <div class="weather-detail"><i class="fas fa-sun"></i> ${sunshine}h ${translations[currentLang]['sunshine'] || 'soleil'}</div>
             </div>
         `;
 
@@ -228,23 +228,23 @@ function displayWeatherForecast(weatherData) {
         
         // Coordonnées
         if (showCoordinates.checked) {
-    additionalHtml += `
-        <div class="additional-detail">
-            <span>Latitude:</span>
-            <span>${weatherData.city.lat.toFixed(3) ?? 'N/A'}</span>
-        </div>
-        <div class="additional-detail">
-            <span>Longitude:</span>
-            <span>${weatherData.city.lon.toFixed(3) ?? 'N/A'}</span>
-        </div>
-    `;
-}
+            additionalHtml += `
+                <div class="additional-detail">
+                    <span class="translatable" data-key="latitude">${translations[currentLang]['latitude'] || 'Latitude'}</span>
+                    <span>${weatherData.city.lat?.toFixed(3) ?? 'N/A'}</span>
+                </div>
+                <div class="additional-detail">
+                    <span class="translatable" data-key="longitude">${translations[currentLang]['longitude'] || 'Longitude'}</span>
+                    <span>${weatherData.city.lon?.toFixed(3) ?? 'N/A'}</span>
+                </div>
+            `;
+        }
 
         // Cumul de pluie
         if (showRainfall.checked && day.rr10 !== undefined) {
             additionalHtml += `
                 <div class="additional-detail">
-                    <span>Cumul pluie:</span>
+                    <span class="translatable" data-key="rain-amount">${translations[currentLang]['rain-amount'] || 'Cumul pluie'}</span>
                     <span>${day.rr10} mm</span>
                 </div>
             `;
@@ -252,21 +252,21 @@ function displayWeatherForecast(weatherData) {
 
         // Détails vent
         if (showWind.checked) {
-    const windDir = day.dirwind10m || 'N/A';
-    const windSpeed = day.wind10m || 'N/A';
-    const windIcon = windDir !== 'N/A' ? getWindDirectionIcon(windDir) : '';
-    
-    additionalHtml += `
-        <div class="additional-detail">
-            <span>Vent moyen:</span>
-            <span>${windSpeed} km/h</span>
-        </div>
-        <div class="additional-detail">
-            <span>Direction:</span>
-            <span>${windIcon} ${windDir !== 'N/A' ? windDir + '°' : 'N/A'}</span>
-        </div>
-    `;
-}
+            const windDir = day.dirwind10m || 'N/A';
+            const windSpeed = day.wind10m || 'N/A';
+            const windIcon = windDir !== 'N/A' ? getWindDirectionIcon(windDir) : '';
+            
+            additionalHtml += `
+                <div class="additional-detail">
+                    <span class="translatable" data-key="wind-speed">${translations[currentLang]['wind-speed'] || 'Vent moyen'}</span>
+                    <span>${windSpeed} km/h</span>
+                </div>
+                <div class="additional-detail">
+                    <span class="translatable" data-key="wind-direction">${translations[currentLang]['wind-direction'] || 'Direction'}</span>
+                    <span>${windIcon} ${windDir !== 'N/A' ? windDir + '°' : 'N/A'}</span>
+                </div>
+            `;
+        }
 
         // Ajouter les données supplémentaires si nécessaire
         if (additionalHtml) {
@@ -279,6 +279,9 @@ function displayWeatherForecast(weatherData) {
 
         weatherResults.appendChild(dayElement);
     });
+
+    // Traduire les nouveaux éléments ajoutés dynamiquement
+    translatePage(currentLang);
 }
 
 // Obtenir l'icône météo appropriée
@@ -300,6 +303,49 @@ function getWindDirectionIcon(degrees) {
     const index = Math.round(((degrees % 360) / 45)) % 8;
     return `<span class="wind-direction">${directions[index]}</span>`;
 }
+
+let currentLang = localStorage.getItem('preferredLang') || 'fr';
+
+function translatePage(lang) {
+    currentLang = lang;
+    localStorage.setItem('preferredLang', lang);
+    
+    // Traduire les éléments avec data-key
+    document.querySelectorAll('[data-key]').forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (translations[lang][key]) {
+            el.textContent = translations[lang][key];
+        }
+    });
+    
+    // Traduire les placeholders
+    document.querySelectorAll('[data-placeholder-key]').forEach(el => {
+        const key = el.getAttribute('data-placeholder-key');
+        if (translations[lang][key]) {
+            el.placeholder = translations[lang][key];
+        }
+    });
+    
+    // Mettre à jour les boutons de langue
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
+    
+    // Mettre à jour le titre de la page
+    document.title = `Instant Weather - ${translations[lang]['app-title']}`;
+}
+
+// Initialisation de la traduction
+document.addEventListener('DOMContentLoaded', () => {
+    translatePage(currentLang);
+    
+    // Gestion des clics sur les boutons de langue
+    document.querySelectorAll('.lang-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            translatePage(btn.dataset.lang);
+        });
+    });
+});
 
 // Afficher un message d'erreur
 function showError(message, duration = 5000) {
