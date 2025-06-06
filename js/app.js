@@ -43,7 +43,25 @@ function updateSleekRange(value) {
     tooltip.textContent = `${value} jour${value > 1 ? 's' : ''}`;
 }
 
+function initRangeSlider() {
+    updateSleekRange(daysRange.value);
+    
+    // Reset transitions temporarily for initial load
+    const fill = document.querySelector('.fill');
+    const bubble = document.querySelector('.bubble');
+    fill.style.transition = 'none';
+    bubble.style.transition = 'none';
+    
+    setTimeout(() => {
+        fill.style.transition = '';
+        bubble.style.transition = '';
+    }, 10);
+}
+
 daysRange.addEventListener('input', () => updateSleekRange(daysRange.value));
+
+document.addEventListener('DOMContentLoaded', initRangeSlider);
+themeToggle.addEventListener('change', initRangeSlider);
 
 // Initialisation
 document.addEventListener('DOMContentLoaded', () => {
