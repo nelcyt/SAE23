@@ -1,3 +1,4 @@
+/* Root variables for color scheme and shadows */
 :root {
     --primary: #3498db;
     --secondary: #2980b9;
@@ -11,12 +12,14 @@
     --text-dark: #e6e6e6;
 }
 
+/* Global reset */
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
 }
 
+/* Base body styles */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
@@ -25,11 +28,13 @@ body {
     transition: background-color 0.3s, color 0.3s;
 }
 
+/* Dark mode body styles */
 body.dark-mode {
     background-color: var(--bg-dark);
     color: var(--text-dark);
 }
 
+/* Main container */
 .container {
     max-width: 1200px;
     margin: 0 auto;
@@ -39,6 +44,7 @@ body.dark-mode {
     flex-direction: column;
 }
 
+/* App header styling */
 .app-header {
     text-align: center;
     padding: 2rem 0;
@@ -49,10 +55,12 @@ body.dark-mode {
     transition: background-color 0.3s;
 }
 
+/* Dark mode header */
 body.dark-mode .app-header {
     background: linear-gradient(135deg, #2c3e50, #34495e);
 }
 
+/* Header top section */
 .header-top {
     display: flex;
     justify-content: center;
@@ -60,20 +68,24 @@ body.dark-mode .app-header {
     gap: 1rem;
 }
 
+/* Main heading */
 .app-header h1 {
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
 }
 
+/* Subtitle */
 .app-header .subtitle {
     font-size: 1.2rem;
     opacity: 0.9;
 }
 
+/* Search section */
 .search-section {
     margin-bottom: 3rem;
 }
 
+/* Search card styling */
 .search-card {
     background: white;
     border-radius: 8px;
@@ -84,30 +96,36 @@ body.dark-mode .app-header {
     transition: background-color 0.3s;
 }
 
+/* Dark mode search card */
 body.dark-mode .search-card {
     background-color: var(--card-dark);
 }
 
+/* Search card heading */
 .search-card h2 {
     margin-bottom: 1.5rem;
     color: var(--dark);
     text-align: center;
 }
 
+/* Dark mode search card heading */
 body.dark-mode .search-card h2 {
     color: var(--text-dark);
 }
 
+/* Form group styling */
 .form-group {
     margin-bottom: 1.5rem;
 }
 
+/* Form labels */
 .form-group label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: 600;
 }
 
+/* Form inputs and selects */
 .form-group input,
 .form-group select {
     width: 100%;
@@ -118,6 +136,7 @@ body.dark-mode .search-card h2 {
     transition: all 0.3s;
 }
 
+/* Dark mode inputs */
 body.dark-mode .form-group input,
 body.dark-mode .form-group select {
     background-color: #2a2a3e;
@@ -125,12 +144,14 @@ body.dark-mode .form-group select {
     border-color: #444;
 }
 
+/* Input focus states */
 .form-group input:focus,
 .form-group select:focus {
     outline: none;
     border-color: var(--primary);
 }
 
+/* Hint text */
 .hint {
     color: #666;
     font-size: 0.8rem;
@@ -138,10 +159,12 @@ body.dark-mode .form-group select {
     margin-top: 0.25rem;
 }
 
+/* Dark mode hint */
 body.dark-mode .hint {
     color: #aaa;
 }
 
+/* Primary button */
 .btn-primary {
     background-color: var(--primary);
     color: white;
@@ -155,10 +178,12 @@ body.dark-mode .hint {
     transition: background-color 0.3s;
 }
 
+/* Button hover state */
 .btn-primary:hover {
     background-color: var(--secondary);
 }
 
+/* Theme toggle button */
 .theme-toggle {
     background: none;
     border: none;
@@ -169,16 +194,19 @@ body.dark-mode .hint {
     transition: transform 0.3s;
 }
 
+/* Theme toggle hover */
 .theme-toggle:hover {
     transform: scale(1.1);
 }
 
+/* Range slider container */
 .sleek-range {
     position: relative;
     height: 50px;
     margin: 20px 0 30px;
 }
 
+/* Range input styling */
 .sleek-range input[type="range"] {
     appearance: none ;
     -webkit-appearance: none;
@@ -194,6 +222,7 @@ body.dark-mode .hint {
     cursor: pointer;
 }
 
+/* Track styling */
 .track {
     position: absolute;
     top: 50%;
@@ -206,10 +235,12 @@ body.dark-mode .hint {
     overflow: hidden;
 }
 
+/* Dark mode track */
 body.dark-mode .track {
     background: rgba(255,255,255,0.1);
 }
 
+/* Fill portion of track */
 .fill {
     position: absolute;
     height: 100%;
@@ -219,6 +250,7 @@ body.dark-mode .track {
     transition: width 0.2s ease;
 }
 
+/* Bubble handle */
 .bubble {
     position: absolute;
     top: 50%;
@@ -234,6 +266,7 @@ body.dark-mode .track {
     transition: left 0.2s ease;
 }
 
+/* Tooltip styling */
 .tooltip {
     position: absolute;
     top: -28px;
@@ -250,10 +283,12 @@ body.dark-mode .track {
     transition: opacity 0.2s;
 }
 
+/* Tooltip visibility on hover */
 .bubble:hover .tooltip {
     opacity: 1;
 }
 
+/* Webkit slider thumb */
 .sleek-range input[type="range"]::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 24px;
@@ -262,17 +297,20 @@ body.dark-mode .track {
     cursor: pointer;
 }
 
+/* Days value display */
 #daysValue {
     font-weight: bold;
     color: var(--primary);
 }
 
+/* Checkbox group layout */
 .checkbox-group {
     display: grid;
     gap: 0.5rem;
     margin-top: 0.5rem;
 }
 
+/* Checkbox labels */
 .checkbox-group label {
     display: flex;
     align-items: center;
@@ -281,6 +319,7 @@ body.dark-mode .track {
     cursor: pointer;
 }
 
+/* Weather section grid */
 .weather-section {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -288,6 +327,7 @@ body.dark-mode .track {
     margin-bottom: 3rem;
 }
 
+/* Weather card styling */
 .weather-card {
     background: white;
     border-radius: 8px;
@@ -298,20 +338,24 @@ body.dark-mode .track {
     overflow: hidden;
 }
 
+/* Dark mode weather card */
 body.dark-mode .weather-card {
     background-color: var(--card-dark);
 }
 
+/* Weather card hover effect */
 .weather-card:hover {
     transform: translateY(-5px);
 }
 
+/* Date display in weather card */
 .weather-date {
     font-weight: bold;
     margin-bottom: 0.5rem;
     color: var(--primary);
 }
 
+/* Weather icon styling */
 .weather-icon {
     font-size: 2.5rem;
     margin: 0.5rem 0;
@@ -319,6 +363,7 @@ body.dark-mode .weather-card {
     text-align: center;
 }
 
+/* Temperature display */
 .weather-temps {
     display: flex;
     justify-content: center;
@@ -327,16 +372,19 @@ body.dark-mode .weather-card {
     font-size: 1.2rem;
 }
 
+/* Maximum temperature */
 .temp-max {
     color: var(--primary);
     font-weight: bold;
 }
 
+/* Minimum temperature */
 .temp-min {
     color: var(--secondary);
     opacity: 0.8;
 }
 
+/* Weather details grid */
 .weather-details {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -344,6 +392,7 @@ body.dark-mode .weather-card {
     margin-top: 1rem;
 }
 
+/* Weather detail items */
 .weather-detail {
     display: flex;
     align-items: center;
@@ -351,6 +400,7 @@ body.dark-mode .weather-card {
     padding: 0.3rem 0;
 }
 
+/* Weather detail icons */
 .weather-detail i {
     width: 1.5rem;
     text-align: center;
@@ -358,6 +408,7 @@ body.dark-mode .weather-card {
     color: var(--secondary);
 }
 
+/* Additional weather info section */
 .weather-additional {
     margin-top: 0.8rem;
     padding-top: 0.8rem;
@@ -365,30 +416,36 @@ body.dark-mode .weather-card {
     font-size: 0.8rem;
 }
 
+/* Dark mode additional info */
 body.dark-mode .weather-additional {
     border-top-color: #444;
 }
 
+/* Additional detail items */
 .additional-detail {
     display: flex;
     justify-content: space-between;
     margin: 0.2rem 0;
 }
 
+/* Wind direction indicator */
 .wind-direction {
     display: inline-block;
     width: 1rem;
     text-align: center;
 }
 
+/* Sun icon color */
 .fa-sun {
     color: #f39c12;
 }
 
+/* Umbrella icon color */
 .fa-umbrella {
     color: #3498db;
 }
 
+/* Footer styling */
 .app-footer {
     text-align: center;
     padding: 1.5rem;
@@ -397,19 +454,23 @@ body.dark-mode .weather-additional {
     font-size: 0.9rem;
 }
 
+/* Dark mode footer */
 body.dark-mode .app-footer {
     color: #aaa;
 }
 
+/* Footer links */
 .app-footer a {
     color: var(--primary);
     text-decoration: none;
 }
 
+/* Footer link hover */
 .app-footer a:hover {
     text-decoration: underline;
 }
 
+/* Error message styling */
 .error-message {
     color: var(--danger);
     text-align: center;
@@ -423,12 +484,14 @@ body.dark-mode .app-footer {
     border-left: 4px solid var(--danger);
 }
 
+/* Dark mode error message */
 body.dark-mode .error-message {
     background-color: #3a1e1e;
     color: #ff8a80;
     border-left-color: #ff8a80;
 }
 
+/* Loading indicator */
 .loading {
     text-align: center;
     padding: 2rem;
@@ -436,7 +499,7 @@ body.dark-mode .error-message {
     font-size: 1.2rem;
 }
 
-
+/* Toggle group layout */
 .toggle-group {
     display: flex;
     flex-direction: column;
@@ -444,12 +507,14 @@ body.dark-mode .error-message {
     margin: 1rem 0;
 }
 
+/* Toggle option styling */
 .toggle-option {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
+/* Custom switch styling */
 .switch {
     position: relative;
     display: inline-block;
@@ -457,12 +522,14 @@ body.dark-mode .error-message {
     height: 24px;
 }
 
+/* Hide default checkbox */
 .switch input {
     opacity: 0;
     width: 0;
     height: 0;
 }
 
+/* Switch slider */
 .slider {
     position: absolute;
     cursor: pointer;
@@ -475,6 +542,7 @@ body.dark-mode .error-message {
     border-radius: 24px;
 }
 
+/* Switch slider knob */
 .slider:before {
     position: absolute;
     content: "";
@@ -487,16 +555,17 @@ body.dark-mode .error-message {
     border-radius: 50%;
 }
 
+/* Checked state for switch */
 input:checked + .slider {
     background-color: var(--primary);
 }
 
+/* Checked state for knob */
 input:checked + .slider:before {
     transform: translateX(26px);
 }
 
-
-/* Positionnement du bouton dark mode */
+/* Dark mode toggle button positioning */
 .dark-mode-toggle {
     position: fixed;
     left: 20px;
@@ -511,112 +580,74 @@ input:checked + .slider:before {
     z-index: 100;
 }
 
+/* Dark mode toggle button in dark mode */
 body.dark-mode .dark-mode-toggle {
     background: rgba(30, 30, 30, 0.9);
 }
 
-/* Icônes */
+/* Theme icons */
 .theme-icon {
     font-size: 1.1rem;
     color: var(--dark);
     transition: all 0.3s ease;
 }
 
+/* Sun icon color */
 .sun-icon {
     color: #f39c12;
 }
 
+/* Moon icon color */
 .moon-icon {
     color: #b8c2cc;
 }
 
+/* Dark mode theme icons */
 body.dark-mode .theme-icon {
     color: var(--text-dark);
 }
 
+/* Dark mode sun icon */
 body.dark-mode .sun-icon {
     color: #b8c2cc;
 }
 
+/* Dark mode moon icon */
 body.dark-mode .moon-icon {
     color: #f5d742;
 }
 
-/* Switch personnalisé */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 24px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 24px;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 16px;
-    width: 16px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    transition: .4s;
-    border-radius: 50%;
-}
-
-input:checked + .slider {
-    background-color: var(--primary);
-}
-
-input:checked + .slider:before {
-    transform: translateX(26px);
-}
-
-/* Animation des icônes au survol */
+/* Switch hover animations */
 .theme-icon:hover {
     transform: scale(1.2);
 }
 
+/* Sun icon hover */
 .sun-icon:hover {
     color: #f39c12 !important;
 }
 
+/* Moon icon hover */
 .moon-icon:hover {
     color: #f5d742 !important;
 }
 
-
-
+/* App logo styling */
 .app-logo {
     height: auto;
-    width: min(300px, 80vw); /* S'adapte à l'écran */
+    width: min(300px, 80vw); /* Responsive width */
     max-width: 100%;
     display: block;
     margin: 0 auto 15px;
     transition: transform 0.3s;
 }
 
-/* Effet hover optionnel */
+/* Logo hover effect */
 .app-logo:hover {
     transform: scale(1.05);
 }
 
+/* Language switcher positioning */
 .language-switcher {
     position: absolute;
     top: 20px;
@@ -630,6 +661,7 @@ input:checked + .slider:before {
     z-index: 100;
 }
 
+/* Language button styling */
 .lang-btn {
     border: none;
     color: var(--dark);
@@ -642,27 +674,29 @@ input:checked + .slider:before {
     background: transparent;
 }
 
+/* Active language button */
 .lang-btn.active {
     background: var(--primary);
     color: white;
 }
 
-/* Version dark */
+/* Dark mode language switcher */
 body.dark-mode .language-switcher {
     background: rgba(0, 0, 0, 0.7);
 }
 
+/* Dark mode language buttons */
 body.dark-mode .lang-btn {
     color: var(--text-dark);
 }
 
+/* Dark mode active language button */
 body.dark-mode .lang-btn.active {
     background: var(--secondary);
     color: white;
 }
 
-
-
+/* Responsive design for smaller screens */
 @media (max-width: 768px) {
     .container {
         padding: 1rem;
@@ -688,8 +722,5 @@ body.dark-mode .lang-btn.active {
         left: 10px;
         bottom: 10px;
         font-size: 0.9rem;
-    }
-    .app-logo {
-        filter: brightness(1); /* Légère correction pour dark mode */
     }
 }

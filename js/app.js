@@ -1,4 +1,4 @@
-// Sélection des éléments DOM
+// DOM elements selection
 const postalCodeInput = document.getElementById('postalCodeInput');
 const townSelect = document.getElementById('townSelect');
 const validateBtn = document.getElementById('validateBtn');
@@ -13,10 +13,10 @@ const showCoordinates = document.getElementById('showCoordinates');
 const showRainfall = document.getElementById('showRainfall');
 const showWind = document.getElementById('showWind');
 
-// token API
+// API token
 const METEO_API_TOKEN = "56b70f8ed4159987116c4b8f089f54681cbc39bedcb068b47f2f6345b62d86b3";
 
-// Gestion du thème
+// Theme management
 themeToggle.addEventListener('change', () => {
     document.body.classList.toggle('dark-mode');
     if (document.body.classList.contains('dark-mode')) {
@@ -26,11 +26,12 @@ themeToggle.addEventListener('change', () => {
     }
 });
 
-// Charger le thème sauvegardé
+// Load saved theme
 if (localStorage.getItem('theme') === 'dark') {
     document.body.classList.add('dark-mode');
     themeToggle.checked = true;
 }
+
 function updateSleekRange(value) {
     const percent = ((value - 1) / 6) * 100;
     const fill = document.querySelector('.fill');
@@ -40,13 +41,13 @@ function updateSleekRange(value) {
     daysValue.textContent = value;
     fill.style.width = `${percent}%`;
     bubble.style.left = `${percent}%`;
-    tooltip.textContent = `${value} jour${value > 1 ? 's' : ''}`;
+    tooltip.textContent = `${value} day${value > 1 ? 's' : ''}`;
 }
 
 function initRangeSlider() {
     updateSleekRange(daysRange.value);
     
-    // Reset transitions temporarily for initial load
+    // Temporarily disable transitions for initial load
     const fill = document.querySelector('.fill');
     const bubble = document.querySelector('.bubble');
     fill.style.transition = 'none';
@@ -62,14 +63,15 @@ function updateDaysDisplay() {
     const days = daysRange.value;
     daysValue.textContent = days;
     
-    // Version complète avec pluriel
+    // Full version with plural handling
     const daysKey = `days-label-${days > 1 ? 'plural' : 'singular'}`;
     const baseText = translations[currentLang][daysKey] || translations[currentLang]['days-label'];
     document.querySelector('label[for="daysRange"]').innerHTML = baseText.replace('{days}', days);
 }
+
 document.addEventListener('DOMContentLoaded', () => {
-    updateDaysDisplay(); // Au chargement
-    daysRange.addEventListener('input', updateDaysDisplay); // Quand on bouge le slider
+    updateDaysDisplay(); // On load
+    daysRange.addEventListener('input', updateDaysDisplay); // When slider moves
 });
 
 daysRange.addEventListener('input', () => updateSleekRange(daysRange.value));
@@ -77,11 +79,11 @@ daysRange.addEventListener('input', () => updateSleekRange(daysRange.value));
 document.addEventListener('DOMContentLoaded', initRangeSlider);
 themeToggle.addEventListener('change', initRangeSlider);
 
-// Initialisation
+// Initialization
 document.addEventListener('DOMContentLoaded', () => {
     updateSleekRange(daysRange.value);
     
-    // Animation au chargement
+    // Loading animation
     document.querySelector('.fill').style.transition = 'none';
     document.querySelector('.bubble').style.transition = 'none';
     setTimeout(() => {
@@ -90,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 10);
 });
 
-// Écouteur pour la saisie du code postal
+// Listener for postal code input
 postalCodeInput.addEventListener('input', async () => {
     const postalCode = postalCodeInput.value.trim();
     
@@ -104,24 +106,24 @@ postalCodeInput.addEventListener('input', async () => {
             const towns = await fetchTownsByPostalCode(postalCode);
             displayTownOptions(towns);
         } catch (error) {
-            showError("Impossible de récupérer les communes. Veuillez réessayer.");
+            showError("Unable to retrieve towns. Please try again.");
         }
     }
 });
 
-// Récupérer les communes depuis l'API
+// Fetch towns from API
 async function fetchTownsByPostalCode(postalCode) {
     const response = await fetch(`https://geo.api.gouv.fr/communes?codePostal=${postalCode}`);
-    if (!response.ok) throw new Error('Erreur API');
+    if (!response.ok) throw new Error('API Error');
     return await response.json();
 }
 
-// Afficher les options de communes
+// Display town options
 function displayTownOptions(towns) {
     townSelect.innerHTML = '';
     
     if (towns.length === 0) {
-        showError("Aucune commune trouvée pour ce code postal.");
+        showError("No towns found for this postal code.");
         return;
     }
     
@@ -135,16 +137,15 @@ function displayTownOptions(towns) {
     townSelection.style.display = 'block';
     additionalOptions.style.display = 'block';
     forecastSelection.style.display = 'block';
-
 }
 
-// Écouteur pour le bouton de validation
+// Listener for validate button
 validateBtn.addEventListener('click', async () => {
     const selectedTownCode = townSelect.value;
     const days = parseInt(daysRange.value);
     
     if (!selectedTownCode || selectedTownCode.length !== 5) {
-        showError("Veuillez sélectionner une commune valide");
+        showError("Please select a valid town");
         return;
     }
 
@@ -153,33 +154,30 @@ validateBtn.addEventListener('click', async () => {
         const weatherData = await fetchWeatherForecast(selectedTownCode, days);
         
         if (weatherData.forecast.length === 0) {
-            showError("Pas de prévisions disponibles pour cette commune");
+            showError("No forecast available for this town");
         } else {
             displayWeatherForecast(weatherData);
         }
     } catch (error) {
-        console.error("Erreur:", error);
-        showError(`Impossible d'obtenir les données météo. Code: ${selectedTownCode}`);
+        console.error("Error:", error);
+        showError(`Unable to get weather data. Code: ${selectedTownCode}`);
     }
 });
 
-
-
-
-// Récupérer les prévisions météo
+// Fetch weather forecast
 async function fetchWeatherForecast(townCode, days) {
     const url = `https://api.meteo-concept.com/api/forecast/daily?token=${METEO_API_TOKEN}&insee=${townCode}&start=0&end=${days-1}`;
     
     try {
         const response = await fetch(url);
-        if (!response.ok) throw new Error(`Erreur HTTP: ${response.status}`);
+        if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
         
         const data = await response.json();
         
-        // Debug: affichez la structure complète reçue
-        console.log("Données API complètes:", JSON.parse(JSON.stringify(data)));
+        // Debug: display complete received structure
+        console.log("Complete API data:", JSON.parse(JSON.stringify(data)));
         
-        // Transformation des données pour uniformiser l'accès
+        // Data transformation for uniform access
         console.log("Latitude:", data.city.latitude);
         console.log("Longitude:", data.city.longitude);
         return {
@@ -195,14 +193,12 @@ async function fetchWeatherForecast(townCode, days) {
             }))
         };
     } catch (error) {
-        console.error("Erreur fetchWeatherForecast:", error);
+        console.error("fetchWeatherForecast Error:", error);
         throw error;
     }
-
-    
 }
 
-// Afficher les prévisions météo
+// Display weather forecast
 function displayWeatherForecast(weatherData) {
     weatherResults.innerHTML = '';
     console.log(weatherData);
@@ -211,16 +207,16 @@ function displayWeatherForecast(weatherData) {
         const options = { weekday: 'long', day: 'numeric', month: 'long' };
         const formattedDate = date.toLocaleDateString(currentLang === 'fr' ? 'fr-FR' : 'en-US', options);
         
-        // Données principales
+        // Main data
         const tempMin = day.tmin !== undefined ? Math.round(day.tmin) : 'N/A';
         const tempMax = day.tmax !== undefined ? Math.round(day.tmax) : 'N/A';
         const rainProb = day.probarain !== undefined ? Math.round(day.probarain) : 'N/A';
         const sunshine = day.sun_hours !== undefined ? day.sun_hours : 'N/A';
 
-        // Icône météo
+        // Weather icon
         const weatherIcon = getWeatherIcon(day.weather);
 
-        // Création de la carte
+        // Card creation
         const dayElement = document.createElement('div');
         dayElement.className = 'weather-card';
         dayElement.innerHTML = `
@@ -240,10 +236,10 @@ function displayWeatherForecast(weatherData) {
             </div>
         `;
 
-        // Données supplémentaires
+        // Additional data
         let additionalHtml = '';
         
-        // Coordonnées
+        // Coordinates
         if (showCoordinates.checked) {
             additionalHtml += `
                 <div class="additional-detail">
@@ -257,17 +253,17 @@ function displayWeatherForecast(weatherData) {
             `;
         }
 
-        // Cumul de pluie
+        // Rain accumulation
         if (showRainfall.checked && day.rr10 !== undefined) {
             additionalHtml += `
                 <div class="additional-detail">
-                    <span class="translatable" data-key="rain-amount">${translations[currentLang]['rain-amount'] || 'Cumul pluie'}</span>
+                    <span class="translatable" data-key="rain-amount">${translations[currentLang]['rain-amount'] || 'Rain amount'}</span>
                     <span>${day.rr10} mm</span>
                 </div>
             `;
         }
 
-        // Détails vent
+        // Wind details
         if (showWind.checked) {
             const windDir = day.dirwind10m || 'N/A';
             const windSpeed = day.wind10m || 'N/A';
@@ -275,7 +271,7 @@ function displayWeatherForecast(weatherData) {
             
             additionalHtml += `
                 <div class="additional-detail">
-                    <span class="translatable" data-key="wind-speed">${translations[currentLang]['wind-speed'] || 'Vent moyen'}</span>
+                    <span class="translatable" data-key="wind-speed">${translations[currentLang]['wind-speed'] || 'Average wind'}</span>
                     <span>${windSpeed} km/h</span>
                 </div>
                 <div class="additional-detail">
@@ -285,7 +281,7 @@ function displayWeatherForecast(weatherData) {
             `;
         }
 
-        // Ajouter les données supplémentaires si nécessaire
+        // Add additional data if needed
         if (additionalHtml) {
             dayElement.innerHTML += `
                 <div class="weather-additional">
@@ -297,11 +293,11 @@ function displayWeatherForecast(weatherData) {
         weatherResults.appendChild(dayElement);
     });
 
-    // Traduire les nouveaux éléments ajoutés dynamiquement
+    // Translate newly added dynamic elements
     translatePage(currentLang);
 }
 
-// Obtenir l'icône météo appropriée
+// Get appropriate weather icon
 function getWeatherIcon(weatherCode) {
     if (!weatherCode) return 'fa-cloud-sun';
     
@@ -314,7 +310,7 @@ function getWeatherIcon(weatherCode) {
     return 'fa-cloud-sun';
 }
 
-// Obtenir l'icône de direction du vent
+// Get wind direction icon
 function getWindDirectionIcon(degrees) {
     const directions = ['↓', '↙', '←', '↖', '↑', '↗', '→', '↘'];
     const index = Math.round(((degrees % 360) / 45)) % 8;
@@ -327,7 +323,7 @@ function translatePage(lang) {
     currentLang = lang;
     localStorage.setItem('preferredLang', lang);
     
-    // Traduire les éléments avec data-key
+    // Translate elements with data-key
     document.querySelectorAll('[data-key]').forEach(el => {
         const key = el.getAttribute('data-key');
         if (translations[lang][key]) {
@@ -335,7 +331,7 @@ function translatePage(lang) {
         }
     });
     
-    // Traduire les placeholders
+    // Translate placeholders
     document.querySelectorAll('[data-placeholder-key]').forEach(el => {
         const key = el.getAttribute('data-placeholder-key');
         if (translations[lang][key]) {
@@ -343,12 +339,12 @@ function translatePage(lang) {
         }
     });
     
-    // Mettre à jour les boutons de langue
+    // Update language buttons
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.lang === lang);
     });
     
-    // Mettre à jour le titre de la page
+    // Update page title
     document.title = `Instant Weather - ${translations[lang]['app-title']}`;
     updateDaysDisplay();
 
@@ -360,12 +356,11 @@ function translatePage(lang) {
     });
 }
 
-
-// Initialisation de la traduction
+// Translation initialization
 document.addEventListener('DOMContentLoaded', () => {
     translatePage(currentLang);
     
-    // Gestion des clics sur les boutons de langue
+    // Handle clicks on language buttons
     document.querySelectorAll('.lang-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             translatePage(btn.dataset.lang);
@@ -373,7 +368,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Afficher un message d'erreur
+// Display error message
 function showError(message, duration = 5000) {
     const existingError = document.querySelector('.error-message');
     if (existingError) existingError.remove();
@@ -392,4 +387,3 @@ function showError(message, duration = 5000) {
         }, duration);
     }
 }
-

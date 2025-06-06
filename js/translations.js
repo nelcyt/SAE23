@@ -1,4 +1,3 @@
-// translations.js
 const translations = {
     fr: {
         "app-title": "Instant Weather",
