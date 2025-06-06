@@ -536,33 +536,42 @@ body.dark-mode .dark-mode-toggle {
     right: 20px;
     display: flex;
     gap: 5px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 5px 10px;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 100;
 }
 
 .lang-btn {
-    background: rgba(255, 255, 255, 0.2);
     border: none;
-    color: white;
-    padding: 5px 10px;
+    color: var(--dark);
+    padding: 5px 12px;
     border-radius: 15px;
     cursor: pointer;
     font-size: 0.8rem;
+    font-weight: bold;
     transition: all 0.3s;
+    background: transparent;
 }
 
 .lang-btn.active {
-    background: white;
-    color: var(--primary);
-    font-weight: bold;
+    background: var(--primary);
+    color: white;
+}
+
+/* Version dark */
+body.dark-mode .language-switcher {
+    background: rgba(0, 0, 0, 0.7);
 }
 
 body.dark-mode .lang-btn {
-    background: rgba(0, 0, 0, 0.2);
     color: var(--text-dark);
 }
 
 body.dark-mode .lang-btn.active {
-    background: var(--card-dark);
-    color: var(--secondary);
+    background: var(--secondary);
+    color: white;
 }
 
 @media (max-width: 768px) {

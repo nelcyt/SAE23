@@ -58,6 +58,20 @@ function initRangeSlider() {
     }, 10);
 }
 
+function updateDaysDisplay() {
+    const days = daysRange.value;
+    daysValue.textContent = days;
+    
+    // Version complète avec pluriel
+    const daysKey = `days-label-${days > 1 ? 'plural' : 'singular'}`;
+    const baseText = translations[currentLang][daysKey] || translations[currentLang]['days-label'];
+    document.querySelector('label[for="daysRange"]').innerHTML = baseText.replace('{days}', days);
+}
+document.addEventListener('DOMContentLoaded', () => {
+    updateDaysDisplay(); // Au chargement
+    daysRange.addEventListener('input', updateDaysDisplay); // Quand on bouge le slider
+});
+
 daysRange.addEventListener('input', () => updateSleekRange(daysRange.value));
 
 document.addEventListener('DOMContentLoaded', initRangeSlider);
@@ -170,7 +184,7 @@ async function fetchWeatherForecast(townCode, days) {
         console.log("Longitude:", data.city.longitude);
         return {
             city: {
-                name: data.city?.name || "Nom inconnu",
+                name: data.city?.name || translations[currentLang]['unknown-city'],
                 lat: data.city?.latitude,
                 lon: data.city?.longitude
             },
@@ -192,7 +206,6 @@ async function fetchWeatherForecast(townCode, days) {
 function displayWeatherForecast(weatherData) {
     weatherResults.innerHTML = '';
     console.log(weatherData);
-    
     weatherData.forecast.forEach(day => {
         const date = day.datetime ? new Date(day.datetime) : new Date();
         const options = { weekday: 'long', day: 'numeric', month: 'long' };
@@ -217,9 +230,13 @@ function displayWeatherForecast(weatherData) {
                 <span class="temp-max">${tempMax}°C</span>
                 <span class="temp-min">${tempMin}°C</span>
             </div>
-            <div class="weather-details">
-                <div class="weather-detail"><i class="fas fa-umbrella"></i> ${rainProb}% ${translations[currentLang]['rain-probability'] || 'pluie'}</div>
-                <div class="weather-detail"><i class="fas fa-sun"></i> ${sunshine}h ${translations[currentLang]['sunshine'] || 'soleil'}</div>
+            <div class="weather-detail">
+                <i class="fas fa-umbrella"></i> 
+                    ${rainProb}% ${translations[currentLang]['rain-probability']}
+            </div>
+            <div class="weather-detail">
+                <i class="fas fa-sun"></i> 
+                        ${sunshine}h ${translations[currentLang]['sunshine']}
             </div>
         `;
 
@@ -333,6 +350,7 @@ function translatePage(lang) {
     
     // Mettre à jour le titre de la page
     document.title = `Instant Weather - ${translations[lang]['app-title']}`;
+    updateDaysDisplay();
 }
 
 // Initialisation de la traduction

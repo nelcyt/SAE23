@@ -9,7 +9,8 @@ const translations = {
         "postal-placeholder": "Ex: 75000",
         "postal-hint": "Saisissez les 5 chiffres du code postal",
         "town-label": "Commune",
-        "days-label": "Prévisions sur %s jours",
+        "days-label-singular": "Prévisions sur {days} jour",
+        "days-label-plural": "Prévisions sur {days} jours",
         "options-label": "Options d'affichage :",
         "coordinates-label": "Coordonnées",
         "rainfall-label": "Cumul pluie",
@@ -26,7 +27,9 @@ const translations = {
         "longitude": "Longitude:",
         "rain-amount": "Cumul pluie:",
         "wind-speed": "Vent moyen:",
-        "wind-direction": "Direction:"
+        "wind-direction": "Direction:",
+        "rain-probability": "probabilité de pluie",
+        'sunshine':'ensoleillement'
     },
     en: {
         "app-title": "Instant Weather",
@@ -37,7 +40,8 @@ const translations = {
         "postal-placeholder": "Ex: 75000",
         "postal-hint": "Enter the 5-digit postal code",
         "town-label": "Town",
-        "days-label": "Forecast for %s days",
+        "days-label-singular": "Forecast for {days} day",
+        "days-label-plural": "Forecast for {days} days",
         "options-label": "Display options:",
         "coordinates-label": "Coordinates",
         "rainfall-label": "Rain amount",
@@ -54,6 +58,8 @@ const translations = {
         "longitude": "Longitude:",
         "rain-amount": "Rain amount:",
         "wind-speed": "Wind speed:",
-        "wind-direction": "Direction:"
+        "wind-direction": "Direction:",
+        "rain-probability": "rain probability", 
+        'sunshine':'sunshine time'
     }
 };
