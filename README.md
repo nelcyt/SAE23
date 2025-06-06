@@ -48,7 +48,7 @@ Application météo offrant des prévisions précises pour toute commune frança
    - Changer la langue FR/EN en haut à droite
 
 ## 🏗 Structure du projet
-
+````
 SAE23/
 ├── index.html # Page principale
 ├── css/
@@ -59,7 +59,7 @@ SAE23/
 ├── images/ # Assets visuels
 │ ├── logo_instant_weather.png
 │ └── logo_onglet.png
-
+````
 ## ✅ Conformité
 - Validation W3C HTML/CSS
 - Accessibilité WCAG AA 2.0
